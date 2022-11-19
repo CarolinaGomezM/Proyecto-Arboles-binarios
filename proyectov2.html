@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Proyecto Arboles binarios</title>
+</head>
+<body>
+
+    <script>
+        //GÓMEZ MUÑOZ CAROLINA EDITH
+         class Nodo{
+            constructor(valor){
+                this.valor=valor;
+                this.hijoizq=null;
+                this.hijoder=null;
+                this.siguiente = null;
+                this.anterior = null;
+            }
+        }
+
+        class ArbolBinario{
+            constructor(){
+                this.root = null;
+                this.primero = null;
+                this.respre = '';
+                this.respro = '';
+            }
+
+        agregar(expresion){
+            let expresion_d = this.aNodo(expresion);
+            for(let i = 0; i<expresion_d.length; i++){
+                if(this.primero == null){
+                    this.primero = expresion_d[i];
+                    this.primero.siguiente = expresion_d[i+1];
+                
+                }else{
+                    expresion_d[i].siguiente = expresion_d[i+1];
+                    expresion_d[i].anterior = expresion_d[i-1];
+                }
+                    
+                }
+            return expresion_d;
+        }
+
+        aNodo(expresion){
+            let arreglo = [];
+            for( let i=0;i<expresion.length; i++){
+                arreglo.push(new Nodo(expresion[i]));
+            }
+            return arreglo;
+        }
+   
+    expresion(expresion){
+        let aux = this.primero;
+        let root = null;
+        while (aux != null){
+    
+            if ((aux.valor==='*' || aux.valor==='/')){
+                aux.hijoder = aux.siguiente;
+                aux.hijoizq = aux.anterior;
+            
+                if(aux.siguiente.siguiente == undefined && aux.anterior.anterior == undefined){
+                    aux.siguiente = null;
+                    aux.anterior = null;
+                }else if(aux.siguiente.siguiente == undefined){
+                    aux.siguiente = null;
+                    aux.anterior = aux.anterior.anterior;
+                    aux.anterior.siguiente = aux;
+                }else if( aux.anterior.anterior == undefined){
+                    aux.anterior = null;
+                    aux.siguiente = aux.siguiente.siguiente;
+                    aux.siguiente.anterior = aux;
+                }else{
+                    aux.siguiente = aux.siguiente.siguiente;
+                    aux.anterior = aux.anterior.anterior;
+                    aux.siguiente.anterior = aux;
+                    aux.anterior.siguiente = aux;
+                }
+                root = aux;
+                }
+                    aux = aux.siguiente;
+            }
+        this.root = root;
+
+        aux = this.primero;
+        while (aux != null){
+    
+            if ((aux.valor==='-' || aux.valor==='+')){
+                aux.hijoder = aux.siguiente;
+                aux.hijoizq = aux.anterior;
+                if(aux.siguiente.siguiente == undefined && aux.anterior.anterior == undefined){
+                    aux.siguiente = null;
+                    aux.anterior = null;
+
+                }else if(aux.siguiente.siguiente == undefined){
+                    aux.siguiente = null;
+                    aux.anterior = aux.anterior.anterior;
+                    aux.anterior.siguiente = aux;
+                }else if( aux.anterior.anterior == undefined){
+                    aux.anterior = null;
+                    aux.siguiente = aux.siguiente.siguiente;
+                    aux.siguiente.anterior = aux;
+                }else{
+                    aux.siguiente = aux.siguiente.siguiente;
+                    aux.anterior = aux.anterior.anterior;
+                    aux.siguiente.anterior = aux;
+                    aux.anterior.siguiente = aux;
+                }
+                root = aux;
+                }
+                    aux = aux.siguiente;
+                
+            } 
+            this.root = root
+            console.log(this.root);
+            return [this.postorder(), this.preorder()];
+        }
+    
+            preorder(){
+                this.respre = '';
+                if(this.root == null){
+                    return false;
+                } else{
+                this._preOrder(this.root);
+                }
+                return this.respre;
+            } 
+            
+            _preOrder(nodox)
+            {
+                this.respre += nodox.valor;
+                if(nodox.hijoizq != null){
+                    this._preOrder(nodox.hijoizq);
+                }
+                if(nodox.hijoder != null){
+                    this._preOrder(nodox.hijoder);
+                }
+
+            }
+
+            postorder(){
+                this.respro = '';
+                if(this.root == null){
+                    return false;
+                } else{
+                this._postOrder(this.root);
+                }
+                return this.respro;
+            }
+            
+            _postOrder(nodox)
+            {
+               
+                if(nodox.hijoizq != null){
+                    this._postOrder(nodox.hijoizq);
+                }
+                if(nodox.hijoder != null){
+                    this._postOrder(nodox.hijoder);
+                }
+                this.respro += nodox.valor;
+
+            }
+
+            resPreOrder(expresion){
+                let pila = [];
+
+
+                for(let i=expresion.length-1;i>=0;i--){
+                    if(expresion[i] == '+' || expresion[i] == '-' || expresion[i] == '*' || expresion[i] == '/'){
+                        let der = Number(pila.pop());
+                        let izq = Number(pila.pop());
+                        pila.push(this.Calculos(expresion[i],der,izq));
+                    }else{
+                        pila.push(expresion[i]);
+                    }
+                }
+                return pila.pop();
+            }
+
+            resPostOrder(expresion){
+                let pila = [];
+                for(let i=0;i<expresion.length;i++){
+                    if(expresion[i] == '+' || expresion[i] == '-' || expresion[i] == '*' || expresion[i] == '/'){
+                        let der = Number(pila.pop());
+                        let izq = Number(pila.pop());
+                        pila.push(this.Calculos(expresion[i],izq,der));
+                    }else{
+                        pila.push(expresion[i]);
+                    }
+                }
+                return pila.pop()
+
+            }
+            
+            Calculos(op, l, r){
+            let resultado;
+            switch(op){
+                case '+':
+                resultado=l+r;
+                break; 
+                case '-':
+                resultado=l-r;
+                break; 
+                case '*':
+                resultado=l*r;
+                break; 
+                case '/':
+                resultado=l/r;
+                break;
+            }
+            return resultado;
+        }
+        }
+        
+        let Arbol = new ArbolBinario();
+        let post = '';
+        let pre = '';
+
+       let expresion = prompt('Ingrese la expresion');
+       console.log(Arbol.agregar(expresion));
+      [post, pre] = Arbol.expresion(expresion);
+        console.log(Arbol.resPreOrder(pre));
+        console.log(Arbol.resPostOrder(post));
+    </script>
+    
+</body>
+</html>
