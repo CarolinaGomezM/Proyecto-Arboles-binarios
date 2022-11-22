@@ -114,7 +114,6 @@
                 
             } 
             this.root = root
-            console.log(this.root);
             return [this.postorder(), this.preorder()];
         }
     
@@ -220,11 +219,13 @@
 
        let expresion = prompt('Ingrese la expresion');
        console.log(Arbol.agregar(expresion));
-      [post, pre] = Arbol.expresion(expresion);
-         console.log("Preorder: "+pre);
+       [post, pre] = Arbol.expresion(expresion);
+       console.log("Arbol:");
+       console.log(Arbol.root);
+       console.log("Preorder: "+pre);
          console.log("Postorder: "+post);
-        console.log(Arbol.resPreOrder(pre));
-        console.log(Arbol.resPostOrder(post));
+       console.log("Resultado es preorder: "+Arbol.resPreOrder(pre));
+       console.log("Resultado en postorder: "+Arbol.resPostOrder(post));
     </script>
     
 </body>
